@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- TODO 当前日志存储位置 -->
+	<property name="LOG_HOME" value="C://Users//devel//Desktop//ctpsp_data2xml//data2xml"/>
+    <!-- TODO 滚动日志存储位置 -->
+    <property name="LOG_ROLLING_HOME" value="C://Users//devel//Desktop//ctpsp_data2xml//logbackRolling/data2xml"/>
+    <!-- 控制台输出，会输出到catalina.out -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- 输出格式 -->
+			<pattern>%d{MM-dd HH:mm:ss} [%thread] %-5level %logger{56} - %msg%n</pattern>
+		</encoder>
+        <!--<withJansi>true</withJansi>-->
+	</appender>
+    <!-- 文件输出 -->
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 文件输出路径 -->
+		<file>${LOG_HOME}/data2xml.log</file>
+        <!-- 文件输出方式 -->
+        <append>true</append>
+        <!-- 文件滚动输出策略 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件滚动输出文件名生成策略 -->
+			<fileNamePattern>${LOG_ROLLING_HOME}/data2xml.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 单个文件大小 -->
+            <maxFileSize>20MB</maxFileSize>
+            <!-- 最大保存时间，单位月 -->
+			<maxHistory>6</maxHistory>
+            <!-- 最大保存空间，必须和maxHistory结合使用 -->
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+		<encoder>
+            <!-- 输出格式 -->
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{86} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+    <!-- TODO spring日志等级，使用ERROR表示只记录错误信息，使用INFO表示记录错误信息和关键节点信息，使用DEBUG表示记录所有信息 -->
+	<logger name="org.springframework" level="INFO" />
+    <!-- TODO 项目日志登记，使用ERROR表示只记录错误信息，使用INFO表示记录错误信息和关键节点信息，使用DEBUG表示记录所有信息 -->
+	<logger name="com.ctpsp" level="INFO" />
+    <!-- TODO sql日志等级，sql是使用debug打印的，使用INFO关闭sql输出，使用DEBUG打开sql输出 -->
+	<logger name="dao" level="INFO"/>
+    <!-- 日志列表，配置的输出策略必须加入到列表中才能生效，这里的等级是没有单独配置logger策略的所有日志的通用等级 -->
+	<root level="ERROR">
+		<appender-ref ref="rollingFile" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
