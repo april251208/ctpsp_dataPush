@@ -13,13 +13,23 @@
     <script type="text/javascript"
             src="<%=request.getContextPath()%>/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript">
-
+     /* $(function(){
+          $.ajax({
+              url: "/getTenderProjectData",
+              dataType: "json",
+              success: function(jsonString) {
+                 alert(jsonString.招标项目.REGION_CODE)
+                  console.info(jsonString);
+              }
+          });
+      });*/
     </script>
 </head>
 
 <body>
+项目加载完成！
+<%--
 <form action="">
-
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
@@ -32,6 +42,7 @@
 .tg .tg-us36{border-color:inherit;vertical-align:top}
 .tg .tg-7btt{font-weight:bold;border-color:inherit;text-align:center;vertical-align:top}
 </style>
+
 <table class="tg">
   <tr>
     <th class="tg-0r18" colspan="4">模拟某平台推送招标项目阶段数据</th>
@@ -139,3 +150,5 @@
   </tr>
 </table>
 </form>
+--%>
+</body>

@@ -3,9 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:cache="http://www.springframework.org/schema/cache"
        xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
 
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,7 +17,13 @@
        http://www.springframework.org/schema/task
 	   http://www.springframework.org/schema/task/spring-task-3.2.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/cache
+       http://www.springframework.org/schema/cache/spring-cache.xsd
+       http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd">
+<!--    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>-->
 
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
     <context:component-scan base-package="com.ctpsp"></context:component-scan>
@@ -72,19 +79,19 @@
     </bean>
 
     <!--这里把mapper下的所有的mapper.xml文件全部引进来-->
-<!--    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" lazy-init="false">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"/>
-        <property name="mapperLocations">
-            <list>
-                <value>classpath:mapper/*.xml</value>
-            </list>
-        </property>
-    </bean>-->
+    <!--    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" lazy-init="false">
+            <property name="dataSource" ref="dataSource"/>
+            <property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"/>
+            <property name="mapperLocations">
+                <list>
+                    <value>classpath:mapper/*.xml</value>
+                </list>
+            </property>
+        </bean>-->
 
-<!--    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
-        <constructor-arg index="0" ref="sqlSessionFactory"/>
-    </bean>-->
+    <!--    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+            <constructor-arg index="0" ref="sqlSessionFactory"/>
+        </bean>-->
 
     <!-- 前台的事务管理 -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
@@ -100,15 +107,17 @@
     </bean>
 
 
-<!--    &lt;!&ndash;支持各任务同时执行,并设置poolSize&ndash;&gt;
-    &lt;!&ndash; 这里只放一个强制使用单线程避免重复跑任务 &ndash;&gt;
-	<task:scheduler id="scheduler" pool-size="1" />
-    <task:scheduled-tasks scheduler="scheduler" >
-     	&lt;!&ndash; 从数据库中取出字段写到xml中 &ndash;&gt;
-       <task:scheduled ref="taskConf" method="dataBaseToXml" 
-               			cron="0 0/1 * * * ?"/>
-    </task:scheduled-tasks>-->
+    <!--    &lt;!&ndash;支持各任务同时执行,并设置poolSize&ndash;&gt;
+        &lt;!&ndash; 这里只放一个强制使用单线程避免重复跑任务 &ndash;&gt;
+        <task:scheduler id="scheduler" pool-size="1" />
+        <task:scheduled-tasks scheduler="scheduler" >
+             &lt;!&ndash; 从数据库中取出字段写到xml中 &ndash;&gt;
+           <task:scheduled ref="taskConf" method="dataBaseToXml"
+                               cron="0 0/1 * * * ?"/>
+        </task:scheduled-tasks>-->
 
     <!-- 统一的异常处理 -->
     <!--<bean id="exceptionResolver" class="com.ctpsp.common.handler.ExceptionHandler" />-->
+    <jaxws:endpoint id="sendServie" implementor="com.ctpsp.service.impl.SendServiceImpl" address="/sendServie"/>
+
 </beans>
